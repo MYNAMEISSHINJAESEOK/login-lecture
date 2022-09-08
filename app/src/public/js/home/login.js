@@ -32,8 +32,16 @@ const login = () => {
     
     .then  ( res => {
 
-        console.log(res)
+        if (res.success) {
+            location.href = "/";
+        } else {
+            alert(res.msg);
+        }
 
+    })
+    
+    .catch ( err => {
+        console.error(new Error("로그인 중 에러"))
     });
 
 }
