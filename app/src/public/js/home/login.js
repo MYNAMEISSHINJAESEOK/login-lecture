@@ -7,12 +7,20 @@ loginBtn.addEventListener('click', () => {
 });
 
 const login = () => {
+
     const req = {
         id: id.value,
         psword: psword.value,
     };
 
-    // fetch();
-
     console.log(req);
+    console.log(JSON.stringify(req));
+    fetch("/login", {
+        method: "POST",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(req),
+    });
+
 }
