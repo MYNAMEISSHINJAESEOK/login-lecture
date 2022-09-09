@@ -10,13 +10,13 @@ class User {
 
     login () {
 
+        const client = this.body
 
-        const body = this.body
-        const { id, psword } = UserStorage.getUserInfo(body.id);
+        const { id, psword } = UserStorage.getUserInfo(client.id);
 
         if (id) {
 
-            if ( id === body.id && psword === body.psword) {
+            if ( id === client.id && psword === client.psword) {
                 return { success : true};
             }
 
@@ -25,6 +25,14 @@ class User {
         }
         
         return { success : false, msg : " 존재하지 않는 아이디 입니다. "};
+    }
+
+    register() {
+
+        const client = this.body
+
+        UserStorage.save(this.body);
+
     }
 
 }
