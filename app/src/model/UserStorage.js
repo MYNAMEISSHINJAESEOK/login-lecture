@@ -22,8 +22,12 @@ class UserStorage {
                             
     }
 
-    static getUsers (...keys) {
-        // const users = this.#users;
+    static #getUsers (data, isAll, ...keys) {
+
+        const users = JSON.parse(data);
+        
+        if (isAll) return users;
+
         const newUsers = keys.reduce( (filteredUsers, key) => {
 
             if (users.hasOwnProperty(key)) {
@@ -32,15 +36,27 @@ class UserStorage {
 
             return filteredUsers;
 
-        }, {} 
+        }, {}
         );
 
         return newUsers;
+
+    }
+
+    static getUsers (isAll, ...keys) {
+
+        const promise = fs
+                        .readFile('./src/db/muriel/users.json')
+                        .then( data => {
+                            return this.#getUsers(data, isAll, keys);
+                        })
+                        .catch(console.error);        
+
+        return promise
+        
     }
 
     static getUserInfo( id ) {
-
-        // const users = this.#users;
 
         const promise = fs
                         .readFile('./src/db/muriel/users.json')
@@ -51,15 +67,31 @@ class UserStorage {
 
         return promise
     }
-
     
+    static async save (userInfo) {
 
-    static save (userInfo) {
-        // const users = this.#users;
-        users.id.push(userInfo.id);
-        users.name.push(userInfo.name);
-        users.psword.push(userInfo.psword);
-        console.log(users);
+        const users = await this.getUsers(true);
+
+        //데이터 추가
+
+        if (users.id.includes(userInfo.id)) {
+
+            throw "이미 존재하는 아이디입니다."
+
+        }
+        
+        else {
+
+            users.id.push(userInfo.id);
+            users.name.push(userInfo.name);
+            users.psword.push(userInfo.psword);
+    
+            fs.writeFile("./src/db/muriel/users.json", JSON.stringify(users));
+
+            return {success : true}
+        
+        }
+
     }
 
 }

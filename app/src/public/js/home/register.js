@@ -14,7 +14,7 @@ registerBtn.addEventListener('click', () => {
 const register = () => {
     
     if (!id.value) return alert("아이디를 입력하여 주십시오.");
-    if (psword !== confirmPsword) return alert("비밀번호가 일치하지 않습니다.");
+    if (psword.value !== confirmPsword.value) return alert("비밀번호가 일치하지 않습니다.");
 
     const req = {
         id: id.value,
@@ -39,7 +39,9 @@ const register = () => {
         if (res.success) {
             location.href = "/login";
         } else {
+            
             alert(res.msg);
+            
         }
 
     })
@@ -49,6 +51,7 @@ const register = () => {
         console.error(new Error("회원가입 중 에러"))
 
         console.log(err);
+
     });
 
 }
