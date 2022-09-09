@@ -1,7 +1,4 @@
-const users = {
-    id : ["woorimIT", "나개발", "김팀장"],
-    psword : ["1234", "1234", "123456"]
-}
+const UserStorage = require("../../model/UserStorage.js")
 
 
 const output = {
@@ -25,21 +22,23 @@ const process ={
 
         const id = req.body.id,
             psword = req.body.psword;
-        
-        
-        if (users.id.includes(id)) {
-            const idx = users.id.indexOf(id);
-            if (users.psword[idx] === psword) {
-                return res.json({
-                    success: true,
-                })
-            }
-        }
 
-        return res.json( {
-            sucess:false,
-            msg: "로그인에 실패하셨습니다.",
-        })
+        console.log(UserStorage.getUsers("id", "psword"));
+        
+        const response = {};
+
+        // if (UserStorage.users.id.includes(id)) {
+        //     const idx = UserStorage.users.id.indexOf(id);
+        //     if (UserStorage.users.psword[idx] === psword) {
+        //         response.success = true;
+        //         return res.json(response);
+        //     }
+        // }
+
+        response.success = false;
+        response.msg = "로그인에 실패하였습니다.";
+
+        return res.json(response)
         
     }
 
