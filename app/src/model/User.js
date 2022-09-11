@@ -13,6 +13,7 @@ class User {
         const client = this.body;
 
 
+            try{
         const {id, psword} = await UserStorage.getUserInfo(client.id);
 
 
@@ -29,6 +30,10 @@ class User {
         }
         
         return { success : false, msg : " 존재하지 않는 아이디 입니다. "};
+    }
+    catch (err ) {
+        return {success : false, msg: `${err}` }
+    }
     }
 
     async register() {
