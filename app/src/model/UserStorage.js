@@ -1,4 +1,4 @@
-const fs = require("fs").promises;
+const db = require("../config/db.js");
 
 class UserStorage {    
 
@@ -44,53 +44,19 @@ class UserStorage {
     }
 
     static getUsers (isAll, ...keys) {
-
-        const promise = fs
-                        .readFile('./src/db/muriel/users.json')
-                        .then( data => {
-                            return this.#getUsers(data, isAll, keys);
-                        })
-                        .catch(console.error);        
-
-        return promise
         
     }
 
     static getUserInfo( id ) {
-
-        const promise = fs
-                        .readFile('./src/db/muriel/users.json')
-                        .then( data => {
-                            return this.#getUserInfo(data, id);
-                        })
-                        .catch(console.error);        
-
-        return promise
+        return new Promise( (resolve, reject) => {
+            db.query("SELECT * FROM users WHERE id = ?", [id], (err,data) => {
+                if(err) reject(err);
+                resolve(data[0])
+            })
+        })
     }
     
     static async save (userInfo) {
-
-        const users = await this.getUsers(true);
-
-        //데이터 추가
-
-        if (users.id.includes(userInfo.id)) {
-
-            throw "이미 존재하는 아이디입니다."
-
-        }
-        
-        else {
-
-            users.id.push(userInfo.id);
-            users.name.push(userInfo.name);
-            users.psword.push(userInfo.psword);
-    
-            fs.writeFile("./src/db/muriel/users.json", JSON.stringify(users));
-
-            return {success : true}
-        
-        }
 
     }
 
