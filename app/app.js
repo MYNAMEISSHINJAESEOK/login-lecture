@@ -7,9 +7,9 @@ const fs = require("fs");
 dotenv.config();
 
 
-const accessLogStream = require("./src/config/log")
-const home = require("./src/routes/home")
-
+const accessLogStream = require("./src/config/log");
+const home = require("./src/routes/home");
+const logger = require("./src/config/logger");
 
 app.set("views", "./src/views");
 app.set("view engine", "ejs");
